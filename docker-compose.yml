@@ -1,5 +1,18 @@
 version: '3.8'
 services:
+
+  postgresDB:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "password12345!"
+      POSTGRES_DB: "foldMoneyDB"
+    volumes:
+      - ./postgresdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+  
   patternmatcher:
     build: .
     command: uvicorn main:app --host 0.0.0.0 --port 8888 --reload
@@ -8,3 +21,8 @@ services:
       - .:/app
     ports:
       - "8888:8888"
+    depends_on: 
+      - postgresDB
+  
+
+  
