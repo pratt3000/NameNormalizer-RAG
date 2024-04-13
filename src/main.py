@@ -1,10 +1,9 @@
 from src.embedder import vectorizer
 from src.create_index import get_index
-from src.constants import INDEX_NAME, NAMESPACE
+from src.constants import INDEX_NAME, NAMESPACE, DUMMY_DATA_PATH
 from src.create_index import initialize_default_index
 from db.crud import create_db_query
 from sqlalchemy.orm import Session
-from db.schemas import Queries
 
 
 def process_query(db_session: Session, query_str: str, top_k: int = 1, threshold: float = 0.5):
@@ -33,4 +32,4 @@ def store_in_database(db_session: Session, query_str: str):
 
 
 def initialize_index():
-    initialize_default_index(INDEX_NAME, NAMESPACE, 'dummy_data/default_data.json')
+    initialize_default_index(INDEX_NAME, NAMESPACE, DUMMY_DATA_PATH)
