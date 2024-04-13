@@ -1,7 +1,13 @@
 from pinecone import Pinecone, ServerlessSpec
 import json
 from src.embedder import get_embeddings
-from src.constants import PINECONE_API_KEY, EMBEDDINGS_SIZE
+from src.constants import EMBEDDINGS_SIZE
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
+PINECONE_API_KEY = os.environ.get("PINECONE_API_KEY")
 
 pc = Pinecone(api_key=PINECONE_API_KEY)
 

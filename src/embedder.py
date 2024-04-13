@@ -3,8 +3,13 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema.document import Document
 from uuid import uuid4
 import tiktoken
-from src.constants import OPENAI_API_KEY, MODEL_NAME, TOKENIZER_NAME
+from src.constants import MODEL_NAME, TOKENIZER_NAME
+from dotenv import load_dotenv
+import os
 
+# Load environment variables from .env file
+load_dotenv()
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 embed = OpenAIEmbeddings(model=MODEL_NAME, openai_api_key=OPENAI_API_KEY)
 
