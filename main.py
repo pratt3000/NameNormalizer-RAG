@@ -2,13 +2,13 @@ from fastapi import FastAPI
 import random
 import uvicorn
 
-from src.main import get_topk_matches
+from src.main import process_query
 
 app = FastAPI()
 
 @app.get("/pm/{query}")
 async def get_merchant(query: str = None):
-    res = get_topk_matches(query, top_k=1)
+    res = process_query(query, top_k=1, threshold=0.5)
     
     output = {
         "query": query, 
