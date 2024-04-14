@@ -45,9 +45,9 @@ async def get_merchant(query: str = None, db_session: Session = Depends(get_db))
 async def root(query: str = None):
     return {"message": f"Hello World {random.randint(1, 100)}"}
 
-@app.get("/cicdtesting")
+@app.get("/cicd")
 async def root(query: str = None):
-    return {"message": f"Hello cicd {random.randint(1, 100)}"}
+    return {"message": f"cicd {random.randint(1, 100)}"}
 
 
 if __name__ == "__main__":
