@@ -4,16 +4,21 @@ on:
   workflow_dispatch
 
 jobs:
-  deploy:
+  Deploy:
+    name: Deploy to EC2
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v2 
+      - name: Build & Deploy
+        env:
+            PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Set up SSH key
-      uses: webfactory/ssh-agent@v0.5.4
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@44.203.139.218 '
 
-    - name: Deploy using Docker Compose
-      run: ssh ubuntu@ec2-44-203-139-218.compute-1.amazonaws.com "bash deploy.sh"
+              # Now we have got the access of EC2 and we will start the deploy .
+              sudo bash deploy.sh
+              
+
