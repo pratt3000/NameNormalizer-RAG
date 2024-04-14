@@ -4,11 +4,18 @@ from bs4 import BeautifulSoup
 from nltk.tokenize import sent_tokenize
 import re
 import spacy
+from src.model import vectorizer
+import numpy as np
+from tqdm import tqdm
+
+def cosine_dist(text1, text2):
+    vec1 = vectorizer(text1)
+    vec2 = vectorizer(text2)
+    return (np.dot(vec1, vec2)) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
 
 # Load the English NER model
 nlp = spacy.load("en_core_web_sm")
-
-def extract_entities(sentence):
+def extract_entities(sentence, company_name):
     
     # Process the input sentence
     doc = nlp(sentence)
@@ -20,7 +27,7 @@ def extract_entities(sentence):
 
     return entities
 
-def clean_text(text):
+def process_text(text, company_name):
     # Tokenize the text into sentences
     sentences = sent_tokenize(text)
     
@@ -35,8 +42,12 @@ def clean_text(text):
     
     all_entities = set()
     for sentence in cleaned_sentences:
-        entities = extract_entities(sentence)
+        entities = extract_entities(sentence, company_name)
         all_entities.update(entities)
+
+    # Filter out entities too far from the company name.
+    # TODO: This is the biggest, current bottleneck for this flow.
+    all_entities = [ent for ent in tqdm(all_entities) if cosine_dist(ent, company_name) > 0.8]
 
     return {'sentences': cleaned_sentences, 'entities': list(all_entities)}
 
@@ -129,7 +140,7 @@ def extract_company_details(response: requests.Response) -> dict:
         wiki_text = ""
         for page in wiki_data['query']['pages']:
             wiki_text += wiki_data['query']['pages'][page]['extract'] + " "
-        wiki_text = clean_text(wiki_text)
+        wiki_text = process_text(wiki_text, company_name)
 
     company_details = {
       'company_name': company_name,
