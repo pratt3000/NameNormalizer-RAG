@@ -21,7 +21,7 @@ def process_query(
     # TODO: Add handling incase we make topk > 1 later.
     # Store the query to database if no match found.
     highest_score = res["matches"][0]["score"]
-    if highest_score < threshold:
+    if highest_score > threshold:
         create_db_query(db_session, query_str)
         return "No match found"
 
