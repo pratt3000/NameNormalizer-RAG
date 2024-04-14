@@ -1,0 +1,21 @@
+name: Deploy Docker Compose to VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up SSH key
+      uses: webfactory/ssh-agent@v0.5.4
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy using Docker Compose
+      run: ssh ubuntu@ec2-44-203-139-218.compute-1.amazonaws.com "bash deploy.sh"
