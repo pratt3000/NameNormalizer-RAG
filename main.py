@@ -9,6 +9,9 @@ from db.schemas import Queries
 from db.database import engine, SessionLocal
 from db import models
 from db.crud import create_db_query
+from src.scheduler import start_scheduler
+
+start_scheduler()
 
 app = FastAPI()
 models.Base.metadata.create_all(bind=engine)

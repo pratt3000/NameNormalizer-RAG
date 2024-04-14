@@ -1,5 +1,5 @@
 from db.database import Base
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean
 
 
 class Query(Base):
@@ -7,3 +7,4 @@ class Query(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     query = Column(String, index=True)
+    is_active = Column(Boolean, default=True)
