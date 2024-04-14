@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 import random
 import uvicorn
 
-from src.main import process_query
+from src.utils import process_query
 from db.schemas import Queries
 from db.database import engine, SessionLocal
 from db import models
@@ -21,6 +21,7 @@ def get_db():
     finally:
         db.close()
 
+
 # This is the endpoint that will save the query to the database``
 @app.post("/save_query/")
 async def save_query(queries: Queries, db_session: Session = Depends(get_db)):
@@ -31,11 +32,8 @@ async def save_query(queries: Queries, db_session: Session = Depends(get_db)):
 @app.get("/pm/{query}")
 async def get_merchant(query: str = None, db_session: Session = Depends(get_db)):
     res = process_query(db_session, query, top_k=1, threshold=0.5)
-    
-    output = {
-        "query": query, 
-        "output": str(res)
-    }
+
+    output = {"query": query, "output": str(res)}
     return output
 
 
