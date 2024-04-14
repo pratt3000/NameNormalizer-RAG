@@ -21,11 +21,6 @@ def scrape_data_and_upload_embeddings_to_pinecone(table_data):
         company_details['wiki_text']['entities'].append(company.split(' ')[0])
         if company_details:
             all_data[company_details['company_name']] = company_details
-    
-
-    # # Save to json
-    # with open('company_data.json', 'w') as f:
-    #     json.dump(all_data, f, indent=4)
 
 
     # Upload embeddings to Pinecone
@@ -41,9 +36,6 @@ def scrape_data_and_upload_embeddings_to_pinecone(table_data):
             merchant_index.upsert(
                 vectors=embeddings, namespace=NAMESPACE
             )
-
-    # Print index stats
-    print(merchant_index.describe_index_stats())
 
 
 def update_job():
