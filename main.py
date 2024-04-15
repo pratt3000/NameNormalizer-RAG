@@ -44,7 +44,7 @@ async def get_merchant(query: str = None, db_session: Session = Depends(get_db))
 # This is the default test endpoint
 @app.get("/")
 async def root(query: str = None):
-    return {"message": f"Hello World1 {random.randint(1, 100)}"}
+    return {"message": f"Hello World {random.randint(1, 100)}"}
 
 
 if __name__ == "__main__":

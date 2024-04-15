@@ -1,6 +1,24 @@
-# Setup
+# How to test API endpoint
+Pass you alternative company name to `http://44.203.139.218:8888/pm/{unnormalized_company_name}`
 
-1. create a .env file and copy the enviroment variables into it.
+ex - `http://44.203.139.218:8888/pm/deepmind`
+
+It should return something like 
+```
+{
+  "query": "deepmind",
+  "output": "{'normalized company name': 'Google', 'eucledian distance': 0.24236941, 'vector_text': 'DeepMind'}"
+}
+```
+
+### Troubleshooting:
+Check if the service is up at `http://44.203.139.218:8888/`. It should return hello world followed by a random integer everytime.
+
+
+
+# How to run Locally
+## Pre-setup
+1. create a .env file and copy the following enviroment variables into it.
     ```
     OPENAI_API_KEY = "xxx"
     QDRANT_API_KEY = "xxx"
@@ -9,11 +27,19 @@
 
 2. create a folder `postgresdata` in the main working directory
 
-# How to run:
+## How to (actually) run it locally:
 
-1. To initialize a small dummy index with some dummy data run initialize_index() in main.py
-2. `make deploy`
-3. Optional - to see logs `make logs` 
-4. visit `http://0.0.0.0:8888` and the api endpoint for putting in alternative merchant names is http://0.0.0.0:8888/pm/{alternative_merchant_name}. This will return the closest normalized company name.
-5. To stop `make all_down`
+1. To spin up all things simply type `make deploy` in your terminal. (Docker needed)
 
+    (Optional - to see logs run `make logs`) 
+
+2. Visit `http://0.0.0.0:8888` and test endpoints.
+
+    1. The api endpoint for normalizing merchant names is `http://0.0.0.0:8888/pm/{alternative_merchant_name}`. This will return the closest normalized company name, along with other details.
+
+4. To stop `make all_down`
+
+## Testing
+1. To test run `tests.py`. If no exceptions arise, everything is working.
+
+    p.s. Didnt get time to write better tests. TODO.
