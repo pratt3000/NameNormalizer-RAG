@@ -46,10 +46,6 @@ async def get_merchant(query: str = None, db_session: Session = Depends(get_db))
 async def root(query: str = None):
     return {"message": f"Hello World1 {random.randint(1, 100)}"}
 
-@app.get("/cicd")
-async def root(query: str = None):
-    return {"message": f"cicd {random.randint(1, 100)}"}
-
 
 if __name__ == "__main__":
     uvicorn.run(app, port=8888)

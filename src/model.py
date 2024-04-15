@@ -10,6 +10,7 @@ import os
 load_dotenv()
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
+# Initialize the OpenAI embeddings model.
 embed = OpenAIEmbeddings(model=MODEL_NAME, openai_api_key=OPENAI_API_KEY)
 
 # Tell tiktoken what model we'd like to use for embeddings
@@ -30,6 +31,7 @@ def tiktoken_len(text: str) -> int:
     return len(tokens)
 
 
+# Function to chunk up text
 def chunk_by_size(text: str, size: int = 50) -> list[Document]:
     """
     Chunk up text recursively.

@@ -11,16 +11,20 @@ load_dotenv()
 QDRANT_API_KEY = os.environ.get("QDRANT_API_KEY")
 QDRANT_CLOUD = os.environ.get("QDRANT_CLOUD")
 
+# Initialize Qdrant client.
 qdrant_client = QdrantClient(
     QDRANT_CLOUD,
     api_key=QDRANT_API_KEY,
 )
 
+
 # create new collection if it doesn't already exist.
 def init_collection(collection_name: str, embedding_size: int):
-
-    if collection_name not in [n.name for n in tuple(qdrant_client.get_collections())[0][1]]:
-
+    # Check if collection already exists
+    if collection_name not in [
+        n.name for n in tuple(qdrant_client.get_collections())[0][1]
+    ]:
+        # Create a new collection
         qdrant_client.recreate_collection(
             collection_name=collection_name,
             vectors_config=models.VectorParams(
@@ -29,6 +33,8 @@ def init_collection(collection_name: str, embedding_size: int):
             ),
         )
 
+
+# Create a list of data objects given text list and corresponding company name.
 def get_dataobj_list(text_list: list, company_name: str) -> list:
     data_objs = [
         models.PointStruct(
@@ -38,7 +44,7 @@ def get_dataobj_list(text_list: list, company_name: str) -> list:
                 "company_name": company_name,
                 "chunk_num": idx,
                 "text_content": text,  # there are 248 chars in this chunk of text
-            }
+            },
         )
         for idx, text in enumerate(text_list)
     ]
@@ -46,7 +52,7 @@ def get_dataobj_list(text_list: list, company_name: str) -> list:
     return data_objs
 
 
-
+# Get embeddings for a given text.
 def get_embeddings(text: str, company_name: str) -> list:
     """
     Given a test string, split text data into chunks, extract metadata, create embeddings for each chunk.
@@ -68,6 +74,7 @@ def get_embeddings(text: str, company_name: str) -> list:
     return data_objs
 
 
+# Initialize a collection with dummy data.
 def initialize_default_collection(collection_name, dummy_data, embedding_size):
     # Create a new index
     init_collection(collection_name, embedding_size)
@@ -81,19 +88,19 @@ def initialize_default_collection(collection_name, dummy_data, embedding_size):
     print(qdrant_client.get_collection(collection_name=collection_name))
 
 
+# Upload data objects to Qdrant.
 def upload_objlist_to_Qdrant(collection_name: str, data_objs: list):
     qdrant_client.upload_points(
         collection_name=collection_name,
-        points = data_objs,
+        points=data_objs,
     )
 
+
+# Search Qdrant for closest vectors.
 def search_qdrant(collection_name: str, query: str, limit: int = 1):
     hits = qdrant_client.search(
         collection_name=collection_name,
         query_vector=vectorizer(query),
         limit=limit,
     )
-
     return hits
-
-    

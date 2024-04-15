@@ -3,10 +3,15 @@ from db.crud import create_db_query
 
 from sqlalchemy.orm import Session
 
+
+# Function to process the query.
 def process_query(
-    db_session: Session, collection_name: str, query_str: str, top_k: int = 1, threshold: float = 0.5
+    db_session: Session,
+    collection_name: str,
+    query_str: str,
+    top_k: int = 1,
+    threshold: float = 0.5,
 ):
-    
     # Get closest vector from Qdrant database.
     res = search_qdrant(collection_name, query_str, limit=top_k)
 
@@ -16,12 +21,11 @@ def process_query(
     if eucledian_distance > threshold:
         create_db_query(db_session, query_str)
         return "No match found"
-    
+
     ans = {
-        "normalized company name": res[0].payload['company_name'],
+        "normalized company name": res[0].payload["company_name"],
         "eucledian distance": eucledian_distance,
-        'vector_text': res[0].payload['text_content']
+        "vector_text": res[0].payload["text_content"],
     }
 
     return ans
-

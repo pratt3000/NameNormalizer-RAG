@@ -1,4 +1,3 @@
-
 from src.constants import COLLECTION_NAME, EMBEDDINGS_SIZE
 from dotenv import load_dotenv
 import os
@@ -15,18 +14,12 @@ qdrant_client = QdrantClient(
     api_key=QDRANT_API_KEY,
 )
 
-def test_dummy_data_injection():
 
+def test_dummy_data_injection():
     dummy_data = {
-        "Apple": [
-            "Apple Inc.", "Iphone", "Ipad", "Macbook"
-        ],
-        "Google": [
-            "Google Inc.", "Google Android"
-        ],
-        "Microsoft": [
-            "Microsoft Corporation", "MSFT Windows", "Microsoft Office"
-        ]
+        "Apple": ["Apple Inc.", "Iphone", "Ipad", "Macbook"],
+        "Google": ["Google Inc.", "Google Android"],
+        "Microsoft": ["Microsoft Corporation", "MSFT Windows", "Microsoft Office"],
     }
 
     try:
@@ -37,16 +30,14 @@ def test_dummy_data_injection():
 
 def test_data_scraper_and_embedding_injection():
     try:
-        table_names = ['msft', 'google']
+        table_names = ["msft", "google"]
         scrape_data_and_upload_embeddings_to_qdrant(table_names)
 
     except Exception as e:
         print(f"Error: {e}")
 
 
-
 if __name__ == "__main__":
-
     # TODO: Write better/segregated tests. Didnt get time to finish the bonus entirely part.
     test_dummy_data_injection()
 

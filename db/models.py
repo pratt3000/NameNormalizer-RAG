@@ -2,6 +2,7 @@ from db.database import Base
 from sqlalchemy import Column, Integer, String, Boolean
 
 
+# Define the schema for the queries table.
 class Query(Base):
     __tablename__ = "queries"
 
