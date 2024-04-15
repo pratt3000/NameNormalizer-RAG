@@ -1,32 +1,21 @@
-from src.model import vectorizer
-from src.constants import INDEX_NAME, NAMESPACE, DUMMY_DATA_PATH
-from src.pinecone_utils import initialize_default_index, get_index
+from src.qdrant_utils import search_qdrant
 from db.crud import create_db_query
 
 from sqlalchemy.orm import Session
 
-
 def process_query(
-    db_session: Session, query_str: str, top_k: int = 1, threshold: float = 0.5
+    db_session: Session, collection_name: str, query_str: str, top_k: int = 1, threshold: float = 0.5
 ):
-    # Generate embeddings for the input query.
-    embeddings = vectorizer(query_str)
-
-    # Get index object and query the pinecone vectorDB.
-    merchant_index = get_index("merchant-index")
-    res = merchant_index.query(
-        vector=embeddings, top_k=top_k, include_metadata=True, namespace=NAMESPACE
-    )
+    
+    # Get closest vector from Qdrant database.
+    res = search_qdrant(collection_name, query_str, limit=top_k)
 
     # TODO: Add handling incase we make topk > 1 later.
     # Store the query to database if no match found.
-    highest_score = res["matches"][0]["score"]
-    if highest_score > threshold:
+    eucledian_distance = res[0].score
+    if eucledian_distance > threshold:
         create_db_query(db_session, query_str)
         return "No match found"
 
     return res
 
-
-def initialize_index():
-    initialize_default_index(INDEX_NAME, NAMESPACE, DUMMY_DATA_PATH)

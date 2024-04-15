@@ -1,17 +1,14 @@
 from apscheduler.schedulers.background import BackgroundScheduler
-import datetime
-
 from sqlalchemy.orm import Session
 from db.crud import get_table_data, update_query_status
 
 from src.internet_scraper import scrape
-import json
-from src.constants import INDEX_NAME, NAMESPACE
-from src.pinecone_utils import get_index, get_embeddings, init_index
+from src.constants import COLLECTION_NAME, EMBEDDINGS_SIZE
+from src.qdrant_utils import get_embeddings, init_collection, upload_objlist_to_Qdrant
 from tqdm import tqdm
 
 
-def scrape_data_and_upload_embeddings_to_pinecone(table_data):
+def scrape_data_and_upload_embeddings_to_qdrant(table_data):
     # Scrape data
     company_names = [names + ' company' for names in table_data]
     all_data = {}
@@ -23,19 +20,15 @@ def scrape_data_and_upload_embeddings_to_pinecone(table_data):
             all_data[company_details['company_name']] = company_details
 
 
-    # Upload embeddings to Pinecone
+    # Upload embeddings to Qdrant
     print("UPLOADING EMBEDDINGS TO Qdrant")
-    init_index(INDEX_NAME) # only creates when index not already present
-    merchant_index = get_index(INDEX_NAME)
+    init_collection(COLLECTION_NAME, EMBEDDINGS_SIZE) # only creates when index not already present
 
     for company in all_data:
         for alternative_merchant_name in tqdm(all_data[company]['wiki_text']['entities']):
-            embeddings = get_embeddings(
-                alternative_merchant_name, company
-            )  # Get embeddings for each alternative name
-            merchant_index.upsert(
-                vectors=embeddings, namespace=NAMESPACE
-            )
+
+            embeddings = get_embeddings(alternative_merchant_name, company)  # Get embeddings for each alternative name
+            upload_objlist_to_Qdrant(COLLECTION_NAME, embeddings)
 
 
 def update_job():
@@ -51,8 +44,8 @@ def update_job():
         table_data.append(table_name.query)
         table_query_ids.append(table_name.id)
 
-    # scrape and upload data embeddings to Pinecone
-    scrape_data_and_upload_embeddings_to_pinecone(table_data)
+    # scrape and upload data embeddings to Qdrant
+    scrape_data_and_upload_embeddings_to_qdrant(table_data)
     
     update_query_status(db_session, table_query_ids, status = False)
     

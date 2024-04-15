@@ -1,5 +1,4 @@
 __pycache__
-test.py
 .env
 postgresdata/*
 .vscode
