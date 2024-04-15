@@ -67,3 +67,15 @@ Check if the service is up at `http://44.203.139.218:8888/`. It should return he
     "Disney",
     "Nike",
     "McDonald's"] 
+
+# Output samples
+
+```
+{"query":"msft","output":"{'normalized company name': 'Microsoft Corporation', 'eucledian distance': 0.21803427, 'vector_text': 'MSFT'}"}
+
+{"query":"amazon","output":"{'normalized company name': 'Amazon.com', 'eucledian distance': 0.24691217, 'vector_text': 'Amazon'}"}
+
+{"query":"amzn","output":"{'normalized company name': 'Amazon.com', 'eucledian distance': 0.3204673, 'vector_text': 'AMzon'}"}
+
+{"query":"sony","output":"{'normalized company name': 'Sony Corporation', 'eucledian distance': 0.2994943, 'vector_text': 'Sonys'}"}
+```
