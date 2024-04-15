@@ -33,6 +33,7 @@ def test_dummy_data_injection():
 def test_data_scraper_and_embedding_injection():
     try:
         table_names = ["msft", "google"]
+
         scrape_data_and_upload_embeddings_to_qdrant(table_names)
 
     except Exception as e:
@@ -41,6 +42,6 @@ def test_data_scraper_and_embedding_injection():
 
 if __name__ == "__main__":
     # TODO: Write better/segregated tests. Didnt get time to finish the bonus entirely part.
-    
+
     test_dummy_data_injection()
     test_data_scraper_and_embedding_injection()

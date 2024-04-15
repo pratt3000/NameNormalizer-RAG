@@ -43,3 +43,27 @@ Check if the service is up at `http://44.203.139.218:8888/`. It should return he
 1. To test run `tests.py`. If no exceptions arise, everything is working.
 
     p.s. Didnt get time to write better tests. TODO.
+
+
+# Misc
+1. Loom video explanation - <a href="https://www.loom.com/share/c89e534c2db84ae184f83dc9afcc97a1?sid=d91f292c-39b9-43d8-b4c6-d7ee0d52e3e9">link</a>
+
+
+2. I've added vectors for 20 merchants right now. Here is the list.
+
+    ["Google", "Facebook", "Adobe", "Amazon", "Apple",
+    "Microsoft",
+    "Tesla",
+    "Netflix",
+    "Uber",
+    "Airbnb",
+    "Twitter",
+    "Intel",
+    "IBM",
+    "Cisco",
+    "Oracle",
+    "Samsung",
+    "Sony",
+    "Disney",
+    "Nike",
+    "McDonald's"] 
