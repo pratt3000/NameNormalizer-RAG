@@ -10,6 +10,7 @@ from db.database import engine, SessionLocal
 from db import models
 from db.crud import create_db_query
 from src.scheduler import start_scheduler
+from src.constants import COLLECTION_NAME
 
 start_scheduler()
 
@@ -34,7 +35,7 @@ async def save_query(queries: Queries, db_session: Session = Depends(get_db)):
 # This is the endpoint that will return the query from the database
 @app.get("/pm/{query}")
 async def get_merchant(query: str = None, db_session: Session = Depends(get_db)):
-    res = process_query(db_session, query, top_k=1, threshold=0.5)
+    res = process_query(db_session, COLLECTION_NAME, query, top_k=1, threshold=0.5)
 
     output = {"query": query, "output": str(res)}
     return output
@@ -43,7 +44,7 @@ async def get_merchant(query: str = None, db_session: Session = Depends(get_db))
 # This is the default test endpoint
 @app.get("/")
 async def root(query: str = None):
-    return {"message": f"Hello World {random.randint(1, 100)}"}
+    return {"message": f"Hello World1 {random.randint(1, 100)}"}
 
 @app.get("/cicd")
 async def root(query: str = None):
