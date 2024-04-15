@@ -16,6 +16,12 @@ def process_query(
     if eucledian_distance > threshold:
         create_db_query(db_session, query_str)
         return "No match found"
+    
+    ans = {
+        "normalized company name": res[0].payload['company_name'],
+        "eucledian distance": eucledian_distance,
+        'vector_text': res[0].payload['text_content']
+    }
 
-    return res
+    return ans
 

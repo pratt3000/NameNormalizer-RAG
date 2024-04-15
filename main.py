@@ -35,7 +35,7 @@ async def save_query(queries: Queries, db_session: Session = Depends(get_db)):
 # This is the endpoint that will return the query from the database
 @app.get("/pm/{query}")
 async def get_merchant(query: str = None, db_session: Session = Depends(get_db)):
-    res = process_query(db_session, COLLECTION_NAME, query, top_k=1, threshold=0.5)
+    res = process_query(db_session, COLLECTION_NAME, query, top_k=1, threshold=0.35)
 
     output = {"query": query, "output": str(res)}
     return output
