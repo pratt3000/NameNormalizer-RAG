@@ -15,6 +15,7 @@ qdrant_client = QdrantClient(
 )
 
 
+# Test the dummy data injection
 def test_dummy_data_injection():
     dummy_data = {
         "Apple": ["Apple Inc.", "Iphone", "Ipad", "Macbook"],
@@ -28,6 +29,7 @@ def test_dummy_data_injection():
         print(f"Error: {e}")
 
 
+# Test the data scraper and embedding injection
 def test_data_scraper_and_embedding_injection():
     try:
         table_names = ["msft", "google"]
@@ -39,6 +41,6 @@ def test_data_scraper_and_embedding_injection():
 
 if __name__ == "__main__":
     # TODO: Write better/segregated tests. Didnt get time to finish the bonus entirely part.
+    
     test_dummy_data_injection()
-
     test_data_scraper_and_embedding_injection()
