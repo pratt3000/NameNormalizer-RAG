@@ -1,3 +1,9 @@
+# Intro
+Given different versions of a company name from bank tranactions, etc this normalizes their names. Also handles unknown names, by automatically scraping relevant data from the internet and adding new vectors to the VectorDB. Tech used was fastapi, Qdrant (also tried pinecone) to create an API endpoint. 
+
+You may still be able to test it as given in the instructions below, if not then I have probably taken it down due to other constraints, try local :)
+
+
 # How to test API endpoint
 Pass you alternative company name to `http://44.203.139.218:8888/pm/{unnormalized_company_name}`
 
